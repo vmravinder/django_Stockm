@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %} <title> Add Stock </title> {% endblock title %}
+
+{% block content %}
+    <h2>Add Stock here..</h2>
+    <form action="{% url 'addStock' %}" class="form-inline my-2 my-lg-0" method="POST">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Add to Portfolio" aria-label="Search" name="ticker">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add Stock</button>
+    </form>
+    <br/>
+
+    <table class="table table-striped table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Stock Name</th>
+            <th scope="col">Stock Symbol</th>
+            <th scope="col">Stock Price</th>
+            <th scope="col">Prev. Close</th>
+            <th scope="col">Market Cap.</th>
+            <th scope="col">52week High</th>
+            <th scope="col">52week Low</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+    {% if ticker %}
+        {% for item in output %}
+            <tr>
+                <th scope="row">{{ item.companyName }}</th>
+                <td>{{ item.symbol }}</td>
+                <td>{{ item.latestPrice }}</td>
+                <td>{{ item.previousClose }}</td>
+                <td>{{ item.marketCap }}</td>
+                <td>{{ item.week52High }}</td>
+                <td>{{ item.week52Low }}</td>
+                
+            </tr>
+        {% endfor %}   
+    {% endif %}    
+    </tbody>
+</table>
+    <br/>
+{% if ticker %}
+    {% for tik in ticker  %}
+    
+       <a href="{% url 'delete' tik.id %}" class="btn btn-primary" role="button"> Delete - {{tik}} </a>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
